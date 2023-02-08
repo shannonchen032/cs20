@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CONTACT US</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/externals/styles.css">
+
+        <style>
+
+            h1{
+                font-size:20px;
+                font-weight:500;
+            }
+
+            h3{
+                font-size:24px;
+                font-style: normal !important;
+                font-weight: 800;
+            }
+
+            p{
+                font-size:16px;
+            } 
+
+            h1,h3,p{
+                font-family:"Segoe UI",Arial,sans-serif;
+                margin:10px 0;
+            }
+
+            body{
+                margin-left: 10px;
+                background-color: #e9eae0;
+            }
+
+
+            .bottom-border{
+                border-bottom:1px solid #ccc!important;
+            }
+
+            .lightgrey{
+                border-color:#f1f1f1!important;
+            }
+
+            .response{
+                padding:8px;
+                display:block;
+                border:none;
+                border-bottom:1px solid #ccc;
+                width:50%
+            }
+            
+            .border{
+                border:1px solid #ccc!important;
+            }
+            
+            .box{
+                margin-top:16px!important;
+                margin-bottom:16px!important
+            }
+
+
+            .button-black{
+                color:black!important;
+                background-color:#46509057!important
+            }
+
+            .button{
+                border:none;
+                display:inline-block;
+                padding:8px 16px;
+                vertical-align:middle;
+                overflow:hidden;
+                text-decoration:none;
+                color:black;
+                text-align:center;
+                cursor:pointer;
+                white-space:nowrap;
+                width:fit-content;
+                text-align:left;
+                padding:8px 16px;
+            }
+
+            .button:hover{
+                color:#000!important;
+                background-color:#ccc!important;
+            }
+
+            .section{
+                margin-top:16px!important;
+                margin-bottom:16px!important;
+            }
+
+
+            .contact-container{
+                padding: 0.1em 16px;
+                margin-top: 50px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class="nav-top">
+            <div class="navbar color-white nav-wide pad nav-card">
+                <a href="../index.html" class="navbar-items nav-button"><b>THE MET x NATIONAL PALACE MUSEUM:</b> AN EXHIBIT</a>
+                <!-- float to right for phones -->
+                <div class="right-nav small-screens">
+                <a href="#statement" class="navbar-items nav-button" position:>ABOUT</a>
+                <a href="./externals/contact.html" class="navbar-items nav-button">CONTACT US</a>
+                </div>
+            </div>
+            </div>
+
+    <div class="contact-container pad-32" id="contact">
+            <h3 class="bottom-border lightgrey pad-16">CONTACT US</h3>
+            <p>We want to hear from you! Please provide valuable feedback to our exhibition:</p>
+    <form target="_blank">
+                <input class="response border" type="text" placeholder="Name" required name="Name">
+                <input class="response box border" type="text" placeholder="Email" required name="Email">
+                <input class="response box border" type="text" placeholder="Subject" required name="Subject">
+                <input class="response box border" type="text" placeholder="Comment" required name="Comment">
+                <button class="button button-black section" type="submit">
+                <h1>SUBMIT FEEDBACK</h1>
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>
