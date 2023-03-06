@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Checkboxes Example</title>
+    <style>
+        html{
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+            margin-top: 5%;
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+	<h2>Checkboxes Example</h2>
+	<label><input type="checkbox" id="check-all"> Check All</label><br><br>
+	<label><input type="checkbox" class="checkbox"> Option 1</label><br>
+	<label><input type="checkbox" class="checkbox"> Option 2</label><br>
+	<label><input type="checkbox" class="checkbox"> Option 3</label><br>
+	<label><input type="checkbox" class="checkbox"> Option 4</label><br>
+
+<script>
+	// Get the "Check All" checkbox element
+	var checkAll = document.getElementById("check-all");
+
+	// Get all the other checkbox elements
+	var checkboxes = document.getElementsByClassName("checkbox");
+
+	// Add event listener to "Check All" checkbox
+	checkAll.addEventListener('change', function() {
+		// If "Check All" is checked
+		if (this.checked) {
+			// Check all other checkboxes
+			for (var i = 0; i < checkboxes.length; i++) {
+				checkboxes[i].checked = true;
+			}
+			// Change label to "Uncheck All"
+			this.nextSibling.nodeValue = "Uncheck All";
+		}
+		// If "Check All" is unchecked
+		else {
+			// Uncheck all other checkboxes
+			for (var i = 0; i < checkboxes.length; i++) {
+				checkboxes[i].checked = false;
+			}
+			// Change label to "Check All"
+			this.nextSibling.nodeValue = "Check All";
+		}
+	});
+
+	// Add event listener to all other checkboxes
+	for (var i = 0; i < checkboxes.length; i++) {
+		checkboxes[i].addEventListener('change', function() {
+			// If any checkbox is unchecked
+			if (!this.checked) {
+				// Uncheck "Check All"
+				checkAll.checked = false;
+				// Change label to "Check All"
+				checkAll.nextSibling.nodeValue = "Check All";
+			}
+			// If all checkboxes are checked
+			else if (document.querySelectorAll('.checkbox:checked').length == checkboxes.length) {
+				// Check "Check All"
+				checkAll.checked = true;
+				// Change label to "Uncheck All"
+				checkAll.nextSibling.nodeValue = "Uncheck All";
+			}
+		});
+	}
+</script>
+</body>
+</html>

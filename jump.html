@@ -1,0 +1,57 @@
+<html> 
+    <head>
+        <title>Assignment 6 Extra Credit</title>
+        <style>
+            html{
+                font-family: arial;
+                text-align: center;
+                margin-top: 5%;
+                font-size: large;
+            }
+        </style>
+
+        <script language="javascript">
+            function swap()
+            {
+                tx1 = document.getElementById("txt1");
+                tx2 = document.getElementById("txt2");
+                butt = document.getElementById("butt");
+
+                if (butt.name == "right")
+                {
+                    txt2.value = txt1.value;
+                    txt1.value = " ";
+                    butt.value = "< JUMP";
+                    butt.name = "left";
+                }
+                else
+                {
+                    txt1.value = txt2.value;
+                    txt2.value = " ";
+                    butt.value = "JUMP >";
+                    butt.name = "right";
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <header>
+        <h1>TRY SWAPPING TEXT!</h1>
+        </header>
+        <article> 
+
+            <section>
+                <input type="text" id="txt1">
+                <input type="button" id="butt" onclick="swap()" value="JUMP >" name="right">
+                <input type="text" id="txt2">
+            </section>
+
+
+        </article>
+        
+        
+        
+    </body>
+
+</html>
