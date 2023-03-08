@@ -1,0 +1,107 @@
+[
+    {
+        "Title": "Sit Next to Me",
+        "Artist": ["Foster the People"],
+        "Genre": ["Indie"],
+        "Year": 2017
+    },
+
+    {
+        "Title": "The Thrill",
+        "Artist": ["Wiz Khalifa", "Empire of the Sun"],
+        "Genre": ["Hip-Pop", "Rap"],
+        "Year": 2020
+    },
+
+    {
+        "Title": "SUMMER",
+        "Artist": ["BROCKHAMPTON"],
+        "Genre": ["Electro House"],
+        "Year": 2020
+    },
+
+    {
+        "Title": "THIB",
+        "Artist": ["Isaiah Rashad"],
+        "Genre": ["Hip-Pop", "Rap"],
+        "Year": 2021
+    },
+
+    {
+        "Title": "Pluto Projector",
+        "Artist": ["Rex Orange County"],
+        "Genre": ["Indie"],
+        "Year": 2019
+    },
+
+    {
+        "Title": "Panama",
+        "Artist": ["Sports"],
+        "Genre": ["Indie"],
+        "Year": 2015
+    },
+
+    {
+        "Title": "B.O.",
+        "Artist": ["ØZI"],
+        "Genre": ["Hip Pop", "Rap"],
+        "Year": 2018
+    },
+
+    {
+        "Title": "Galvanize",
+        "Artist": ["The Chemical Brothers"],
+        "Genre": ["Pop"],
+        "Year": 2017
+    },
+
+    {
+        "Title": "Wildfire",
+        "Artist": ["John Mayer", "Khalid"],
+        "Genre": ["Soft Rock"],
+        "Year": 2013
+    },
+
+    {
+        "Title": "i saw you in the dream",
+        "Artist": ["The Japanese House"],
+        "Genre": ["Alternative", "Indie"],
+        "Year": 2019
+    },
+
+    {
+        "Title": "No Name #1",
+        "Artist": ["Elliott Smith"],
+        "Genre": ["Indie Folk"],
+        "Year": 1994
+    },
+
+    {
+        "Title": "RED LADY",
+        "Artist": ["Phil Cordell"],
+        "Genre": ["Pop", "Rock"], 
+        "Year": 1969
+    },
+
+    {
+        "Title": "Homesick",
+        "Artist": ["Noah Kahan"],
+        "Genre": ["Alternative", "Indie"],
+        "Year": 2022
+    },
+
+    {
+        "Title": "I'm in Love with You",
+        "Artist": ["The 1975"],
+        "Genre": ["Alternative", "Indie"],
+        "Year": 2022
+    },
+
+    {
+        "Title": "Penelope",
+        "Artist": ["Pinback"],
+        "Genre": ["Alternative", "Indie"],
+        "Year": 2001
+    }
+
+]
