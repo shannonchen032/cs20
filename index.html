@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&amp;family=Questrial&amp;display=swap" rel="stylesheet">
+        <style>
+            body{
+                font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+                line-height: 1.5vw;
+                padding: 5% 30% 5% 30%;
+                text-align: center;
+                font-size: 1vw;
+            }
+
+            h1{
+                font-family: averia;
+                text-align: center;
+                color: #ed562a;
+                text-shadow: 2px 1px 0px white, 3px 4px 0px rgba(0,0,0,0.15);
+            }
+
+            #datesData{
+                font-size: 1.2vw;
+                font-family: averia;
+                text-align: left;
+            }
+
+            hr{
+                border-top: 2px dotted #e55007 !important;
+            }
+        </style>
+
+        <title>API Fun!</title>
+        
+        <meta charset="utf-8"/>
+
+        <script>
+            function getData() {
+                /* makes instance of request object to make a HTTP request*/
+                request = new XMLHttpRequest(); 
+            
+            //sets URL for the AJAX request to be the JSON file
+            request.open("GET", "https://calendarific.com/api/v2/holidays?&api_key=7e5c7c9a9fb0836e6561077f4b2b959fc68409ac&country=CA&year=2023", true); 
+                
+                //set up event handler/callback
+                request.onreadystatechange = function() {
+    
+                    if (request.readyState == 4 && request.status == 200) {
+
+                        //waiting for success
+                        output = request.responseText;
+                    
+                        hol = JSON.parse(output);
+                        document.getElementById("datesData").innerHTML = ""; 
+                        for (var i = 0; i < hol["response"]["holidays"].length; i++ )
+                        {
+                            document.getElementById("datesData").innerHTML += "<strong>" + hol["response"]["holidays"][i].name + "</strong><br>"; 
+                            document.getElementById("datesData").innerHTML += "<strong>" + "Date: &nbsp;" + "</strong>" + hol["response"]["holidays"][i].date.iso  + "<br>"; 
+                            document.getElementById("datesData").innerHTML += "<strong>" + "About the holiday: &nbsp;" + "</strong>" + hol["response"]["holidays"][i].description  + "<br>" + "<br>" + "<hr>"; 
+                            document.getElementById("datesData").innerHTML += "<br>"; 					
+                        }
+                        
+                    }
+
+
+                    else if (request.readyState == 4 && request.status != 200) {
+                        document.getElementById("datesData").innerHTML = "something went wrong! please check the logs :(";
+                    }
+
+                    else if (request.readyState == 3) {
+                        document.getElementById("datesData").innerHTML = "you loaded too soon, please try again!";
+                    }
+
+                }
+
+            //firing off the HTTP request
+                request.send();
+            }
+        </script>
+    </head>
+
+
+    <body onload="getData()">
+        <h1> 2023 HOLIDAYS IN CANADA 🍁</h1><hr><br>
+        <div>
+            The API gives a list of holidays for the specified country. The URL can be found at https://calendarific.com/api-documentation.
+            I chose Canada as the region and 2023 as the year in my API request. A useful application of this API is employee scheduling,  
+            which ensures there are enough employees scheduled to work during regular business hours and that no one is scheduled to work 
+            on a holiday when the business is closed. Another application would be travel planning, and could even be integrated into 
+            travel booking websites and apps to help users plan their trips more efficiently.
+            <br><br><hr><br>
+        </div>
+
+        <div id="datesData">loading data...</div>
+    </body>
+</html>
