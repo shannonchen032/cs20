@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temple Scroll Animation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div id="context-overlay">
+        <p>
+            Under the gaze of Yue Lao, the Old Man of the Moon, fate is woven by an
+            invisible red string. As you step forward, you partake in an ancient ritual —
+            offering symbols of love, devotion, and destiny.
+        </p>
+    </div>
+    
+    <div id="scroll-container">
+        <div class="scene" id="background"></div>       
+        <div class="scene" id="incense-burner"></div>
+        <div class="scene" id="temple-steps"></div>
+        <div class="scene" id="inner-scene"></div>
+        <div id="incense-text">The scent of the incense guides the spirit...</div>
+        <div id="inner-scene-text">... and the temple's heart reveals itself.</div>
+    </div>   
+    
+    <div id="enter-button-container">
+        <button id="enter-button">find your string</button>
+    </div>
+
+    <div id="final-smoke-screen"></div> <!-- Smoke Effect on Button Click -->
+    <div id="new-screen">
+        <div id="interaction1-container">
+            <!-- Flashing step label -->
+            <div id="flashing-step1">To commence the ritual, place the objects below <br> on the table as an offering to Yue Lao.</div>
+        
+            <!-- Row of draggable objects -->
+            <div id="object-row">
+                <div class="draggable-object" id="object1" data-description="Fresh flowers, symbolizing the wish for love to bloom and bear fruit.">
+                    <img src="object1.png" alt="Object 1">
+                </div>
+                <div class="draggable-object" id="object2" data-description="Yue Lao enjoys sweet treats. Offer chocolates, candies, egg tarts, or mochi.">
+                    <img src="object3.png" alt="Object 2">
+                </div>
+                <div class="draggable-object" id="object3" data-description="Longan fruit, representing completeness and fulfillment.">
+                    <img src="object2.png" alt="Object 3">
+                </div>
+                <div class="draggable-object" id="object4" data-description="Red dates, symbolizing an early and successful marriage.">
+                    <img src="object4.png" alt="Object 4">
+                </div>                
+            </div>
+        
+            <!-- Floating description box -->
+            <div id="object-description"></div>
+        
+            <!-- Drop zone container for object placement -->
+            <div id="drop-zone-container">
+                <div class="drop-zone" id="drop1"></div>
+                <div class="drop-zone" id="drop2"></div>
+                <div class="drop-zone" id="drop3"></div>
+                <div class="drop-zone" id="drop4"></div>
+            </div>
+        </div>
+        
+        <!-- Interaction 2: Dragging the wooden sculpture -->
+        <div id="interaction2-container" style="display: none;">
+            <div id="interaction-container">
+                <!-- Flashing label positioned above the wooden sculpture -->
+                <div id="flashing-label">Next, you must zhǐ jiǎo, a ritual where two crescent-shaped <br> blocks are tossed to seek divine guidance based on how they land. </div>
+        
+                <!-- Wooden sculpture (draggable object) -->
+                <img id="wooden-sculpture" src="wooden_sculpture.png" alt="Wooden Sculpture">
+        
+                <!-- Result container (shows fail/success images) -->
+                <div id="result-container">
+                    <img id="result-image" src="" alt="Result Image">
+                    <button id="try-again">Try Again</button>
+                </div>
+        
+                <!-- Success message (centered, wider, and better formatted) -->
+                <div id="success-message">Success! The sculpture has been placed correctly.</div>
+            </div>
+        </div>
+    </div>    
+
+    <div id="final-smoke-screen"></div>
+
+
+    <svg id="red-string" width="150" height="100" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10,50 Q50,10 100,50 T140,50" stroke="red" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>    
+
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <script src="red-string.js"></script>
+</body>
+</html>
