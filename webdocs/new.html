@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrolling List with Highlight Effect</title>
+    <style>
+
+        @font-face {
+            font-family: 'Zeyada';
+            src: url('fonts/Zeyada-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'NanumPenScript';
+            src: url('fonts/NanumPenScript-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'OvertheRainbow';
+            src: url('fonts/OvertheRainbow-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SquarePeg';
+            src: url('fonts/SquarePeg-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'NotoSerif';
+            src: url('fonts/NotoSerifKhojki-VariableFont_wght.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .scroll-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 2rem;
+            scroll-behavior: smooth; /* Smooth scrolling */
+            scrollbar-width: thin; /* Makes scrollbar less sensitive */
+            scrollbar-color: rgba(0, 0, 0, 0.3) transparent; /* Custom scrollbar */
+        }
+
+        /* For Webkit-based browsers (Chrome, Edge, Safari) */
+        .scroll-content::-webkit-scrollbar {
+            width: 8px; /* Makes the scrollbar thinner */
+        }
+
+        .scroll-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .scroll-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            overflow-y: hidden;
+            background: url('scrollBg.png') no-repeat center center;
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5vw;
+        }
+
+        .scroll-container {
+            width: 30vw;
+            height: 80vh;
+            background: url('listBg.png') no-repeat center center;
+            background-size: 32vw;
+            padding: 5vw;
+            border-radius: 10px;
+            /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); */
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+
+
+        /* Title section that stays fixed */
+        .title {
+            font-family: 'SquarePeg', cursive; /* Custom font */
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+            flex-shrink: 0; /* Prevents shrinking */
+        }
+
+        .context {
+            font-family: 'NanumPenScript'; /* Custom font */
+            font-size: 1rem;
+            line-height: 1.1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            color: #000000b8;
+            border-bottom: 1px solid #00000064; /* Separates from scrollable list */
+            flex-shrink: 0; /* Prevents shrinking */
+        }
+
+        /* Scrollable list area */
+        .scroll-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-bottom: 2rem;
+        }
+
+        ul {
+            font-family: 'NanumPenScript';
+            /* font-style: italic; */
+            list-style: none;
+            font-size: 1.5rem;
+            line-height: 2rem;
+        }
+
+        li {
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            padding: 0.5rem 0;
+        }
+
+        .active {
+            color: #ff0000;
+            text-shadow: 2px 2px 10px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Image container for dynamic images */
+        .image-container {
+            width: 40vw;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .image-container img {
+            height: 182%; /* Stretches the images to match container height */
+            object-fit: fill; /* Ensures images stretch to fit the container */
+            display: none; /* Keeps images hidden initially */
+            position: absolute;
+            transform: translate(-10%);
+            filter: drop-shadow(5px 5px 10px rgb(0, 0, 0));
+
+        }
+
+        @keyframes flashRedGlow {
+            0% { filter: drop-shadow(0 0 5px red); }
+            25% { filter: drop-shadow(0 0 5px white); }
+            50% { filter: drop-shadow(0 0 15px red); }
+            100% { filter: drop-shadow(0 0 5px white); }
+        }
+    
+        .flashing {
+            animation: flashRedGlow 1s infinite alternate ease-in-out;
+        }
+    
+        /* Fade-in effect */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    
+        .fade-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'SquarePeg', cursive;
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.8);
+            opacity: 0; /* Initially hidden */
+            animation: fadeIn 3s ease-in forwards;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="scroll-container">
+        <div class="title">Create Your Red String Manifesto: <br> Defining Your Ideal Partner</div> <!-- Fixed title -->
+        <div class="context">Now, you define their ideal partner’s traits — physical, emotional, and financial — ensuring the red string leads to true compatibility.</div> <!-- Fixed title -->
+
+        <div class="scroll-content">
+            <ul>
+                <li data-image="image1.png"> 1. Eyes that Hold Stories
+                    Deep and expressive, like a deers—bright, kind, and full of life. 
+                    <br><br></li>
+                <li data-image="image2.png"> 2. Height that Feels Like Home
+                    Tall enough that I can rest my head on their chest comfortably—at least 183cm. 
+                <br><br></li>
+                <li data-image="image3.png">3. Thoughtful in the Smallest Ways
+                    Notices when my coffee cup is empty and refills it, remembers how I like my blankets tucked in.
+                <br><br></li>
+                <li data-image="image4.png">4. Loyal Like the Tide
+                    Someone who, even in the presence of temptation, only has eyes for me.
+                <br><br></li>
+                <li data-image="image4.png">5. A Travel Companion, Not a Financial Burden
+                    Comfortable splitting costs on at least 3 trips a year, valuing experiences over luxury.
+                <br><br></li> 
+                <li data-image="image5.png">6. Stays When My Heart is Heavy
+                    The first person I can turn to when I feel lost—someone who listens, then lightens my worries with optimism.</li>
+                <br><br></li> 
+                <li data-image="image6.png">7. Understands the Balance of Wealth
+                    Loves making money but knows when to spend it — doesn’t hesitate to treat themselves or me within reason.</li>
+                <br><br></li>
+                <li data-image="image7.png">8. Sees the World with Open Eyes
+                    Appreciates both fine dining and street food, enjoys both five-star hotels and cozy hostels—lives with adaptability and gratitude.
+                <br><br></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="image-container">
+        <!-- Images will be dynamically shown here -->
+    </div>
+
+    <script>
+        const scrollContent = document.querySelector('.scroll-content');
+        const listItems = document.querySelectorAll("li");
+        const imageContainer = document.querySelector('.image-container');
+    
+        listItems.forEach(item => {
+            let img = document.createElement("img");
+            img.src = item.dataset.image;
+            img.classList.add("dynamic-image");
+            img.style.display = "none"; // Initially hidden
+            imageContainer.appendChild(img);
+        });
+    
+        const images = document.querySelectorAll('.dynamic-image');
+    
+        function highlightClosestItem() {
+            let containerRect = scrollContent.getBoundingClientRect();
+            let containerCenter = containerRect.top + scrollContent.clientHeight / 3;
+    
+            let closestItem = null;
+            let minDistance = Infinity;
+    
+            listItems.forEach((item) => {
+                let rect = item.getBoundingClientRect();
+                let itemCenter = rect.top + rect.height / 2;
+                let distance = Math.abs(containerCenter - itemCenter);
+    
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestItem = item;
+                }
+            });
+    
+            listItems.forEach(item => item.classList.remove("active"));
+            images.forEach(img => {
+                img.style.display = "none";
+                img.classList.remove("flashing");
+            });
+    
+            if (scrollContent.scrollTop === 0) {
+                closestItem = listItems[0];
+            }
+    
+            if (closestItem) {
+                closestItem.classList.add("active");
+    
+                let imageToShow = document.querySelector(`img[src="${closestItem.dataset.image}"]`);
+                if (imageToShow) {
+                    imageToShow.style.display = "block";
+    
+                    if (closestItem.dataset.image === "image7.png") {
+                        imageToShow.classList.add("flashing");
+                        imageToShow.style.cursor = "pointer";
+                        imageToShow.onclick = playSmokeEffect;
+                    } else {
+                        imageToShow.classList.remove("flashing");
+                        imageToShow.onclick = null;
+                    }
+                }
+            }
+        }
+    
+        function playSmokeEffect() {
+            // Remove all existing content
+            document.body.innerHTML = '';
+    
+            // Create a full-screen GIF effect
+            let smokeGif = document.createElement("img");
+            smokeGif.src = "smoke2.gif";
+            smokeGif.style.position = "fixed";
+            smokeGif.style.top = "0";
+            smokeGif.style.left = "0";
+            smokeGif.style.width = "100vw";
+            smokeGif.style.height = "100vh";
+            smokeGif.style.objectFit = "cover";
+            smokeGif.style.zIndex = "9999";
+            smokeGif.style.pointerEvents = "none";
+    
+            document.body.appendChild(smokeGif);
+    
+            // After the GIF plays, fade in the final text
+            setTimeout(() => {
+                let fadeText = document.createElement("div");
+                fadeText.classList.add("fade-text");
+                fadeText.innerText = "Ready to trust fate?";
+    
+                document.body.appendChild(fadeText);
+            }, 3000); // Adjust timing based on smoke1.gif duration
+        }
+    
+        window.onload = () => {
+            listItems[0].classList.add("active");
+            let firstImage = document.querySelector(`img[src="${listItems[0].dataset.image}"]`);
+            if (firstImage) firstImage.style.display = "block";
+        };
+    
+        scrollContent.addEventListener("scroll", highlightClosestItem);
+    </script>
+    
+    
+</body>
+</html>
