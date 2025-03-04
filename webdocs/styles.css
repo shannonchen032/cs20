@@ -1,0 +1,514 @@
+@font-face {
+    font-family: 'Zeyada';
+    src: url('fonts/Zeyada-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumPenScript';
+    src: url('fonts/NanumPenScript-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OvertheRainbow';
+    src: url('fonts/OvertheRainbow-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SquarePeg';
+    src: url('fonts/SquarePeg-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NotoSerif';
+    src: url('fonts/NotoSerifKhojki-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#context-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-size: 1.5rem;
+    font-family: 'NanumPenScript', cursive;
+    padding: 20px;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+    z-index: 100; /* Ensure it appears above other elements */
+}
+
+#context-overlay p {
+    max-width: 60%;
+    line-height: 1.6;
+}
+
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+    background-color: black;
+}
+
+#scroll-container {
+    height: 800vh; /* Extended height to keep scrolling past the stairs */
+    position: relative;
+}
+
+.scene {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s ease-out, filter 0.6s ease-out, opacity 0.6s ease-out;
+}
+
+/* Full Temple View */
+#background {
+    background-image: url('bg.png');
+    transform: scale(1);
+    filter: blur(0px);
+    z-index: -3;
+}
+
+/* Temple Steps */
+#temple-steps {
+    /* background-image: url('steps.png'); */
+    transform: scale(1.1) translateY(-10vh);
+    z-index: 1;
+}
+
+/* Incense Burner */
+#incense-burner {
+    background-image: url('incense.png');
+    transform: scale(1);
+    z-index: 2;
+}
+
+/* Inner Hall - Always Present, Positioned Behind Stairs */
+#inner-scene {
+    /* background-image: url('scene2.png'); */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform-origin: center center;
+    transform: scale(1) translateY(-5vh);
+    opacity: .9;
+    filter: blur(0px); /* 🔹 Starts clear */
+    z-index: -2;
+}
+
+/* Smoke Effect */
+#smoke {
+    background-image: url('smoke.png');
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    z-index: 0;
+}
+
+#scroll-container {
+    height: 1400vh; /* Extended further to allow zoom into inner room */
+    position: relative;
+}
+
+/* Shared Text Styling */
+#incense-text, #inner-scene-text {
+    position: fixed;
+    font-family: 'SquarePeg'; /* Custom font */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.493);
+    opacity: 0; /* 🔹 Starts invisible */
+    transition: opacity 0.5s ease-out;
+    text-align: center;
+    font-weight: bold;
+    z-index: 5; /* Ensure it's above other elements */
+    padding: 0px 10px; /* Adjust padding to fit the background image */
+}
+
+/* Inner Scene Text (Same Style, Different Placement) */
+#inner-scene-text {
+    top: 55%; /* Slightly lower than the first text */
+}
+
+/* Smoke Screen Effect */
+#smoke-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('smoke.png') center/cover no-repeat; /* Use a semi-transparent smoke image */
+    opacity: 0;
+    transition: opacity 2s ease-out; /* Smooth fade-in and fade-out */
+    z-index: 6; /* Ensure it's above all elements */
+}
+
+/* Full-Screen Inner Scene (Revealed After Smoke) */
+#full-inner-scene {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('full_inner_scene.png'); /* Make sure this image exists */
+    background-size: cover;
+    background-position: center;
+    opacity: 0; /* 🔹 Starts invisible */
+    transition: opacity 2s ease-in-out;
+    z-index: 7; /* Ensure it is on top after the smoke fades */
+}
+
+
+/* Enter Button Styling */
+#enter-button-container {
+    position: fixed;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: none; /* 🔹 Hidden by default */
+}
+
+#enter-button {
+    font-family: 'NanumPenScript', cursive; /* Custom font */
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 40px 60px; /* Adjust padding to fit the background image */
+    font-size: 1.5rem;
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    transition: opacity 0.3s ease-in-out;
+    width: 350px !important;
+
+    /* Background Image */
+    background-image: url('buttonBg.png'); /* Replace with your image file */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Ensure text remains readable */
+    text-shadow: 2px 2px 4px rgba(255, .5, .5, 0.909);
+}
+
+#enter-button:hover {
+    opacity: 0.8; /* Slight fade effect on hover */
+}
+
+/* Final Smoke Effect - Covers everything */
+#final-smoke-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('transition.gif') center/cover no-repeat;
+    opacity: 0;
+    display: none; /* Start completely hidden */
+    transition: opacity 1s ease-out;
+    z-index: 15;
+}
+
+/* New Background Screen */
+#new-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('room.png'); /* Ensure this file exists */
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    display: none; /* Start hidden */
+    transition: opacity 1.5s ease-in-out;
+    z-index: 14;
+}
+
+/* Ensure everything is properly placed inside the new screen */
+#interaction-container {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    text-align: center;
+}
+
+/* Flashing Label Positioned Above the Sculpture */
+#flashing-label {
+    font-family: 'NanumPenScript', cursive; 
+    position: relative;
+    /* transform: translate(-230%,-300%);  */
+    font-size: 1.25rem;
+    color: white;
+    font-weight: bold;
+    animation: flash 1s ease-out 1 forwards;
+    padding: 50px 50px; 
+    width: 40vw;
+    border-radius: 5px;
+    white-space: nowrap; 
+    background-image: url('buttonBg.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+
+/* #flashing-step1 {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    animation: flash 1s ease-out 1 forwards;
+    white-space: nowrap; 
+    font-family: 'NanumPenScript', cursive; 
+    position: absolute;
+    padding: 25px 40px; 
+    width: 35vw;
+    font-size: 1.25rem;
+    background-color: transparent;
+    color: white;
+    z-index: 10;
+    background-image: url('descriptionBg.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+} */
+
+
+@keyframes flash {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Draggable Wooden Sculpture */
+#wooden-sculpture {
+    width: 20vh;
+    height: auto;
+    position: relative;
+    transform: translate(-210%,-120%);
+    cursor: grab;
+}
+
+/* Result Image Container */
+#result-container {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-300%, -70%);
+    text-align: center;
+}
+
+#result-image {
+    width: 200px;
+    height: auto;
+}
+
+/* Try Again Button */
+#try-again {
+    display: none;
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Success Message - Wider to Reduce Line Breaks */
+#success-message {
+    display: none;
+    font-family: 'NanumPenScript'; /* Custom font */
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-150%);
+    font-size: 2rem;
+    color: black;
+    font-weight: bold;
+    width: 50vw; /* 🔹 Increase width so text doesn’t wrap too much */
+    max-width: 600px; /* 🔹 Ensures it doesn’t get too wide on larger screens */
+    text-align: center;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.8); /* Optional: Light background for readability */
+    border-radius: 8px; /* Optional: Rounded corners */
+}
+
+
+/* Flashing step label at the center */
+#flashing-step1 {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    animation: flash 1s ease-out 1 forwards;
+    white-space: nowrap; /* 🔹 Prevents the label from wrapping */
+    font-family: 'NanumPenScript', cursive; /* Custom font */
+    position: absolute;
+    padding: 25px 40px; /* Adjust padding to fit the background image */
+    width: 35vw;
+    font-size: 1.25rem;
+    background-color: transparent;
+    color: white;
+    z-index: 10;
+    background-image: url('descriptionBg.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+
+@keyframes flash {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Object row at the bottom */
+#object-row {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+}
+
+/* Draggable objects */
+.draggable-object {
+    width: 8vw;
+    height: 8vw;
+    cursor: grab;
+    position: relative;
+}
+
+.draggable-object img {
+    width: 100%;
+    height: auto;
+}
+
+/* Floating description box */
+#object-description {
+    font-family: 'NanumPenScript', cursive; /* Custom font */
+    position: absolute;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 5px;
+    font-size: 1.2rem !important;
+    display: none;
+    pointer-events: none;
+    white-space: nowrap;
+    align-items: center;
+}
+
+/* Drop zone container */
+#drop-zone-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 30px;
+}
+
+/* Drop zones where objects snap */
+.drop-zone {
+    width: 100px;
+    height: 100px;
+    border: 0px dashed white;
+}
+
+/* Step 2 (Wooden Sculpture) should be hidden until unlocked */
+#interaction2-container {
+    display: none; /* 🔹 Hidden until step 1 is completed */
+}
+
+@keyframes flash {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+#scroll-instruction {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem !important; 
+    color: red !important;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 50;
+    animation: flash 1s infinite alternate; /* 🔹 Add flashing effect */
+}
+
+#red-string {
+    position: fixed;
+    top: 49%;
+    left: 50%;
+    transform: translate(-150%, -20%) !important;
+    cursor: grab;
+    display: none; /* Hidden initially */
+    opacity: 1 !important; /* Ensure it's visible */
+    z-index: 9999; /* Ensure it's above other elements */
+    filter: drop-shadow(1px 1px 5px red); /* 🔥 Red glow effect */
+    transition: opacity 0.2s ease-out; /* Fade out faster */
+}
+
+#final-smoke-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('smoke.gif');
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    display: none; /* Hidden until triggered */
+    transition: opacity 1.5s ease-in-out;
+    z-index: 15;
+}
+
+#new-screen {
+    transition: opacity 0.5s ease-out; /* Fast fade-out effect */
+}
