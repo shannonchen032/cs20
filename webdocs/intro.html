@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction Scene</title>
+    <style>
+        @font-face {
+            font-family: 'Zeyada';
+            src: url('fonts/Zeyada-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'NanumPenScript';
+            src: url('fonts/NanumPenScript-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'OvertheRainbow';
+            src: url('fonts/OvertheRainbow-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SquarePeg';
+            src: url('fonts/SquarePeg-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'NotoSerif';
+            src: url('fonts/NotoSerifKhojki-VariableFont_wght.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .section {
+            height: 120vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        /* Index Section (p5.js Animation) */
+        #index {
+            position: relative;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+        #background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        /* Smoke Effect for Transition */
+        #intro-smoke {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('smoke1.gif'); /* Ensure smoke.gif exists */
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            display: none;
+            transition: opacity 2s ease-in-out;
+            z-index: 15;
+        }
+
+        #enter-button {
+            font-family: 'NanumPenScript', cursive; /* Custom font */
+            position: absolute;
+            top: 90%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 30px 90px; /* Adjust padding to fit the background image */
+            font-size: 1.5rem;
+            background-color: transparent;
+            color: white;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.3s ease-in-out;
+
+            /* Background Image */
+            background-image: url('buttonBg.png'); /* Replace with your image file */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            /* Ensure text remains readable */
+            text-shadow: 2px 2px 4px rgba(255, .5, .5, 0.909);
+        }
+
+        #enter-button:hover {
+            opacity: 0.8; /* Slight fade effect on hover */
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Intro Scene (Hands Background + p5.js String Animation) -->
+    <div id="index" class="section">
+        <img id="background" src="hands.png" alt="Background Image">
+        <button id="enter-button">Enter</button> <!-- New Button -->
+    </div>
+
+    <!-- Smoke Effect for Transition -->
+    <div id="intro-smoke"></div>
+
+    <!-- Include p5.js and Your Red String Script -->
+    <script src="p5.min.js"></script>
+    <script src="sketch.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const enterButton = document.getElementById("enter-button");
+            const smoke = document.getElementById("intro-smoke");
+
+            enterButton.addEventListener("click", function() {
+                console.log("🔴 Enter button clicked! Playing smoke transition...");
+
+                // 🔹 Play Smoke Effect
+                smoke.style.display = "block";
+                smoke.style.opacity = "1";
+
+                setTimeout(() => {
+                    window.location.href = "index.html"; // Move to the main scene
+                }, 2000); // Adjust delay based on smoke animation
+            });
+        });
+    </script>
+</body>
+</html>
