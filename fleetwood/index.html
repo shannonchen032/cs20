@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WEB DOCS FINAL</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600&display=swap');
+
+    .intro-question {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: #fff;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.4);
+    }
+
+    .highlight {
+      display: block;
+      font-weight: 900;
+      font-size: 3rem;
+      color: #ffe47a;
+    }
+
+    .subhead {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: #ccc;
+    }
+    
+    .global-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('./portraits/test1.jpg') center center / cover no-repeat;
+      z-index: -100;
+      pointer-events: none; 
+    }
+    
+    /* body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-radial-gradient(circle, rgba(255,255,255,0.05) 0 1px, transparent 1px 2px);
+      opacity: 0.1;
+      z-index: 0;
+      mix-blend-mode: overlay;
+      filter: contrast(300%) brightness(80%);
+    } */
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top left, #0a1f33, #0a0f1a 80%);
+      color: #eee;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .scene1 {
+      position: relative;
+      height: 200vh;
+      background: url('./portraits/flowers.png') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    .scene1-content {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    .scene1-text {
+      /* font-family: 'Playfair Display', serif; */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 800px;
+      transition: opacity 0.8s ease;
+      font-size: 1.5rem;
+      line-height: 1.5em;
+      color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .scene1-text.fade-in {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    .scene1-text.fade-out {
+      opacity: 0;
+    }
+
+
+    .play-pill {
+      background: white;
+      color: #111;
+      padding: 0.2rem 0.6rem;
+      /* border-radius: 8px; */
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    .play-pill:hover {
+      background: rgba(238, 238, 238, 0.598);
+    }
+
+    .play-icon {
+      font-size: 0.9rem;
+      margin-left: 6px;
+    }
+
+    .graphic {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+    }
+
+    .song-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(2, auto);
+      gap: 2em;
+      position: relative;
+    }
+
+    .song {
+      width: 10em;
+      height: 8em;
+      object-fit: cover;
+      transition: opacity 0.4s, transform 1.5s ease;
+    }
+
+    .dim {
+      opacity: 0.3;
+    }
+
+    .step-section {
+      position: relative;
+      padding: 100vh 0;
+      z-index: 2;
+    }
+
+    .step {
+      background: #111;
+      text-align: center;
+      border: white 1px solid;
+      color: white;
+      padding: 1.5rem 1.5rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      font-size: 1rem;
+      line-height: 1.8rem;
+      width: 60%;
+      max-width: 400px;
+      margin: 0 auto;
+      opacity: 0;
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      transform: translateY(20px);
+    }
+
+    .step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .zoom-transition {
+      height: 100vh;
+    }
+
+    #img-7.zoomed {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(4);
+      z-index: 20;
+      transition: transform 1s ease, opacity 1s ease;
+    }
+
+    body.zoom-mode .song:not(#img-7) {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .highlight-overlay {
+      position: fixed;
+      top: 50%;
+      left: 65%;
+      transform: translate(-50%, -50%);
+      max-width: 100%;
+      max-height: 100%;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      pointer-events: none;
+      z-index: 40;
+    }
+
+    .highlight-overlay.visible {
+      opacity: 1;
+    }
+
+    details {
+      margin-top: 0.5rem;
+    }
+
+    .step.left-aligned {
+      margin-left: 5%;
+      margin-right: auto;
+      text-align: left;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+      color: #ccc;
+    }
+
+    #img-7.faded-out {
+      opacity: 0 !important;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    .lyrics-overlay {
+      position: fixed;
+      top: 70%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.2rem;
+      text-align: center;
+      padding: 1rem 2rem;
+      max-width: 80%;
+      z-index: 50;
+      pointer-events: none;
+      white-space: pre-wrap;
+      /* font-style: italic; */
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      font-family: 'Playfair Display', serif !important;
+    }
+
+    .lyrics-overlay.visible {
+      opacity: 1;
+    }
+
+    .lyrics-sara {
+      color: #42d8be; /* soft pink */
+    }
+
+    .lyrics-dreams {
+      color: #42d8be; /* sky blue */
+    }
+
+    .lyrics-go {
+      color: #da6088; /* golden yellow – distinct from Sara and Dreams */
+    }
+
+    .lyrics-second {
+      color: #da6088; /* soft orange tone */
+    }
+
+    .lyrics-inline {
+      margin-top: 1rem;
+      font-style: italic;
+      font-size: 1.3rem;
+      line-height: 1.4;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      font-family: 'Playfair Display', serif; /* 👈 add this line */
+    }
+    
+    .lyrics-inline.visible {
+      opacity: 1;
+    }
+
+    .scene4-pinned {
+    position: relative;
+    height: 400vh; /* One screen per block */
+    background: black;
+    color: white;
+    }
+
+    .scene4-inner {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    }
+
+    .scene4-text-block {
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    font-size: 1.6rem;
+    max-width: 700px;
+    line-height: 1.5;
+    padding: 2rem;
+    }
+
+    .scene4-text-block.visible {
+    opacity: 1;
+    }
+
+    /* HERE! */
+    .scene5-pinned {
+    position: relative;
+    height: 200vh; /* 1 screen to scroll in, 1 for playback */
+    background: black;
+    }
+
+    .scene5-inner {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    }
+
+    .scene5-video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    }
+
+    .scene5-video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    }
+
+    .scene5-video-wrapper video.visible {
+    opacity: 1;
+    }
+
+    .mute-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 1.2rem;
+    }
+
+    .vignette-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.8) 100%);
+    z-index: 5;
+    }
+
+    .scene5-lyrics {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 1.4rem;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0.5rem 1.5rem;
+    border-radius: 12px;
+    z-index: 9;
+    font-style: italic;
+    white-space: pre-wrap;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    }
+
+    .highlight-mick {
+      color: white; /* DodgerBlue or whatever suits your palette */
+      font-weight: bold;
+      background: #9283e2;
+      padding: 0.1rem 0.35rem;
+      /* border-radius: 8px; */
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    .highlight-stevie {
+      color: white; /* DodgerBlue or whatever suits your palette */
+      font-weight: bold;
+      background: #42d8be;
+      padding: 0.1rem 0.35rem;
+      /* border-radius: 8px; */
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    .highlight-lindsey {
+      font-weight: bold;
+      color: white; /* DodgerBlue or whatever suits your palette */
+      font-weight: bold;
+      background: #da6088;
+      padding: 0.2rem 0.35rem;
+      /* border-radius: 8px; */
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    .lyric-stevie {
+      color: #42d8be;
+      background: rgba(17, 17, 17, 0.586);
+      text-align: center;
+      border-top: 1px solid #42d8be;
+      border-left: 1px solid #42d8be;
+      border-right: 3px solid #42d8be;
+      border-bottom: 3px solid #42d8be;      
+      padding: 1rem 1rem;
+      border-radius: .2em;
+      font-size: 1.2rem;
+      line-height: 1.5rem;
+      width: 60%;
+      max-width: 400px;
+    }
+
+    .lyric-together {
+      color: #da6088;
+      background: rgba(17, 17, 17, 0.586);
+      text-align: center;
+      border-top: 1px solid #da6088;
+      border-left: 1px solid #da6088;
+      border-right: 3px solid #da6088;
+      border-bottom: 3px solid #da6088;      
+      padding: 1rem 1rem;
+      border-radius: .2em;
+      font-size: 1.2rem;
+      line-height: 1.5rem;
+      width: 60%;
+      max-width: 400px;    
+    }
+
+    .circle-arrow {
+    display: inline-block;
+    background: white;
+    color: black;
+    font-size: 1.2rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 2rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+  }
+
+
+  </style>
+</head>
+<body>
+  <div class="global-background"></div>
+  <!-- <div class="grain-overlay"></div> -->
+
+  <section class="scene1">
+    <div class="scene1-content">
+      <div class="scene1-text" id="line1">
+        Does <span style="font-family: Playfair Display; font-size: 1.4rem; letter-spacing: .02rem;">pain</span> come at the price of <span style="font-family: Playfair Display; font-size: 1.4rem; letter-spacing: .02rem;"> brilliance</span>?
+      </div>
+      <div class="scene1-text fade-out" id="line2">
+        <p>What if <span style="font-family: Playfair Display; font-size: 1.4rem; letter-spacing: .02rem;">heartbreak, rivalry, and tension</span> are <br> the very fuel behind <span class="emphasis">greatness</span>?</p>
+      </div>
+      <div class="scene1-text fade-out" id="line3" style="font-size: 1.4rem; line-height: 2rem !important;">
+        <p>
+          throughout history, we have seen a pattern —<br>
+          a pattern where <i>struggle shapes brilliance</i>,<br>
+          & threads of <span style="font-family: Playfair Display; font-size: 1.4rem; letter-spacing: .02rem;">turmoil woven into genius</span>...<br><br><span class="circle-arrow">↓</span>
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  
+
+  <div class="graphic">
+    <div class="song-grid" id="songGrid">
+      <img class="song" id="img-1" src="./portraits/1.png" alt="Kurt Cobain">
+      <img class="song" id="img-2" src="./portraits/3.png" alt="Courtney Love">
+      <img class="song" id="img-3" src="./portraits/2.png" alt="Figure 3">
+      <img class="song" id="img-4" src="./portraits/4.png" alt="Figure 4">
+      <img class="song" id="img-5" src="./portraits/5.png" alt="Beyoncé">
+      <img class="song" id="img-6" src="./portraits/6.png" alt="Marina Abramović">
+      <img class="song" id="img-7" src="./portraits/fleetwood.png" alt="Fleetwood Mac">
+      <img class="song" id="img-8" src="./portraits/10.png" alt="Fleetwood Mac 2">
+      <img class="song" id="img-9" src="./portraits/9.png" alt="Michael Jordan">
+      <img class="song" id="img-10" src="./portraits/8.png" alt="Figure 10">
+      <img class="song" id="img-11" src="./portraits/11.png" alt="Figure 11">
+      <img class="song" id="img-12" src="./portraits/12.png" alt="Figure 12">
+    </div>
+  </div>
+
+  <audio id="fleetwoodAudio" src="./audio/landslide.mp3"></audio>
+
+  <div class="step-section">
+    <div class="step" data-highlight="img-1">
+      Kurt Cobain and Courtney Love's chaos gave voice to a generation through
+      <span class="play-pill" onclick="toggleAudio('nirvanaAudio', this)">
+        <strong>NIRVANA</strong> <span class="play-icon">▶</span>
+      </span> &nbsp; music.
+      <audio id="nirvanaAudio" src="./audio/nirvana.mp3"></audio>
+    </div>
+  </div>
+
+  <div class="step-section">
+    <div class="step" data-highlight="img-5">
+      Beyoncé turned infidelity in her marriage into a musical revolution in her
+      <span class="play-pill" onclick="toggleAudio('beyonceAudio', this)">
+        <strong>LEMONADE</strong> <span class="play-icon">▶</span>
+      </span>&nbsp; album.
+      <audio id="beyonceAudio" src="./audio/beyonce.mp3"></audio>
+    </div>
+  </div>
+
+  <div class="step-section">
+    <div class="step" data-highlight="img-6">
+      <a href="https://en.wikipedia.org/wiki/Marina_Abramović" target="_blank" style="color:lightblue;text-decoration:underline;"><b>Marina Abramović</b></a> and Ulay turned their breakup into performance—walking the Great Wall of China to meet and part forever.
+      <details>
+        <summary>Read more</summary>
+        <p>In 1988, after years of artistic collaboration and romantic partnership, Marina and Ulay decided to end both by starting from opposite ends of the Great Wall of China. After 90 days of walking, they met in the middle to say goodbye—a poetic closure to their journey together.</p>
+      </details>
+    </div>
+  </div>
+
+  <div class="step-section">
+    <div class="step" data-highlight="img-9">
+      <a href="https://en.wikipedia.org/wiki/Michael_Jordan" target="_blank" style="color:lightblue;text-decoration:underline;"><b>Michael Jordan</b></a> transformed every slight into fire. He didn’t just win games—he punished doubts with performance.
+      <details>
+        <summary>Read more</summary>
+        <p>Jordan’s infamous “I took that personally” mindset turned criticism into motivation. From being cut from his high school varsity team to proving himself after each NBA Finals loss, he used adversity as fuel for six championships and a cultural legacy.</p>
+      </details>
+    </div>
+  </div>
+
+  <div class="step-section">
+    <div class="step" data-highlight="img-7">
+      Among them, one story echoes louder than the rest…
+    </div>
+  </div>
+
+  <div class="zoom-transition" id="zoomTrigger"></div>
+
+  <div class="step-section">
+    <div class="step visible" style="background: none; border:none; box-shadow:none; font-family: Playfair Display; font-size: 2rem; font-style: italic;">
+      <strong>Fleetwood Mac's.</strong> 
+    </div>
+  </div>
+
+  <!-- Overlay highlight container -->
+  <div id="highlight-overlay">
+    <img id="highlight-intro" src="./portraits/og.png" class="highlight-overlay" />
+    <img id="highlight-stevie" src="./portraits/lindseystevie2.png" class="highlight-overlay" />
+    <img id="highlight-lindsey" src="./portraits/lindseyband2.png" class="highlight-overlay" />
+    <img id="highlight-mick" src="./portraits/mickstevie 2png.png" class="highlight-overlay" />
+        <!-- Lyrics overlays on top of mickstevie.png -->
+    <div id="lyric-overlays">
+    </div>
+  </div>
+
+  <!-- New Scene 3 steps -->
+  <div class="step-section">
+    <div class="step left-aligned" id="line-intro" style="background: none; border:none; box-shadow:none; font-family: Playfair Display; font-size: 2rem; font-style: italic; line-height: 3rem;">
+      Five bandmates. <br>Three tangled hearts.
+    </div>
+  </div>
+  
+  <div class="step-section">
+    <div class="step left-aligned" id="line-mick" style="background:none !important; border:none;box-shadow: none; font-family: Playfair Display; font-size: 1.2rem; font-style: italic; line-height: 3rem;">
+      <span class="highlight-mick">Mick Fleetwood</span> &nbsp; loved &nbsp;<span class="highlight-stevie">Stevie Nicks</span>.
+    </div>
+  </div>  
+
+  <!-- mick section -->
+  <div class="step-section">
+    <div class="step left-aligned" id="mick-1">
+      <span class="highlight-mick">Mick Fleetwood</span> — drummer and founding heartbeat of Fleetwood Mac — fell for  <span class="highlight-stevie">Stevie Nicks</span> during the band’s peak.
+      Their brief affair, tangled in secrecy, reflected the chaos surrounding the making of <em>Tusk (1979)</em>.
+    </div>
+  </div>
+
+  <div class="step-section">
+    <div class="step left-aligned" id="mick-2">
+      Although  <span class="highlight-mick">Mick</span> wasn’t one of Fleetwood Mac’s primary songwriters—and he never wrote songs about <span class="highlight-stevie">Stevie</span> — their personal entanglements still left a mark. 
+      When Mick began dating Stevie’s best friend, Sara Recor, it shattered her. Out of that heartbreak came <em></em>      
+      <span class="play-pill" onclick="toggleLyricAudio('mickAudio2', 'lyrics-mick-2', this)">
+      <strong><i>Sara</i></strong> <span class="play-icon">▶</span>
+      </span>
+      <audio id="mickAudio2" src="./audio/sara.mp3"></audio>
+      <div class="lyrics-inline lyrics-sara" id="lyrics-mick-2"></div>
+    </div>
+  </div>
+
+  <div class="step-section">
+    <div class="step left-aligned" id="line-stevie">
+      But before Mick Fleetwood, before <i>Sara</i>, there was the great love story with <span class="highlight-lindsey">Lindsey Buckingham</span><br>
+    </div>
+  </div>
+
+    <!-- stevie section -->
+    <div class="step-section">
+      <div class="step left-aligned" id="mick-1">
+        Their relationship began long before Fleetwood Mac. But fame, resentment, and control eroded the love they once had. 
+        Still, they kept writing—and singing—to each other, even as they fell apart.
+      </div>
+    </div>
+  
+    <div class="step-section">
+      <div class="step left-aligned" id="mick-2">
+        <span class="highlight-stevie">Stevie</span> answered <span class="highlight-lindsey">Lindsey</span> with
+        <span class="play-pill" onclick="toggleLyricAudio('dreamsAudio', 'lyrics-dreams', this)">
+          <strong><i>Dreams</i></strong> <span class="play-icon">▶</span>
+        </span> — her aching truth.
+        <audio id="dreamsAudio" src="./audio/dreams.mp3"></audio>
+        <div class="lyrics-inline lyrics-dreams" id="lyrics-dreams"></div>
+      </div>      
+    </div>
+  
+  <div class="step-section">
+    <div class="step left-aligned" id="line-lindsey" style="background:none !important; border:none;box-shadow: none;">
+      And <span class="highlight-lindsey">Lindsey</span> loved the band more.</span>
+    </div>
+  </div>
+
+  <div class="step-section">
+    <div class="step left-aligned" id="line-lindsey">
+      When their relationship ended, he didn’t leave. He stayed.
+      He buried the heartbreak and channeled it into the music —
+      but the pain still bled through the chords he played.          
+    </div>
+  </div>
+
+
+  <div class="step-section">
+    <div class="step left-aligned" id="lindsey-lyrics">
+      In 
+      <span class="play-pill" onclick="toggleLyricAudio('goAudio', 'lyrics-go', this)">
+        <strong><i>Go Your Own Way</i></strong> <span class="play-icon">▶</span>
+      </span>
+      he lashed out—frustrated and exposed.
+      <audio id="goAudio" src="./audio/goyourownway.mp3"></audio>
+      <div class="lyrics-inline lyrics-go" id="lyrics-go"></div>
+    </div>
+  </div>
+
+  <div class="step-section">
+    <div class="step left-aligned" id="lindsey-news">
+      Then in 
+      <span class="play-pill" onclick="toggleLyricAudio('secondAudio', 'lyrics-second', this)">
+        <strong><i>Second Hand News</i></strong> <span class="play-icon">▶</span>
+      </span>,
+      he masked grief with rhythm, but the message cut deep.
+      <audio id="secondAudio" src="./audio/secondhandnews.mp3"></audio>
+      <div class="lyrics-inline lyrics-second" id="lyrics-second"></div>
+    </div>
+  </div>  
+  
+  <section class="scene4-pinned">
+    <div class="scene4-inner">
+      <div class="scene4-text-block">The heartbreak, the tangled love triangle—<br>it all lived on in the music.</div>
+      <div class="scene4-text-block">And 22 years later, the wound still hadn’t closed.</div>
+      <div class="scene4-text-block" id="silverSpringsTrigger">
+        Stevie answered again—this time onstage, <br>face to face <br><strong>with <em>Silver Springs</em> in 1997.</strong>
+      </div>      
+    </div>
+  </section>
+
+  <!-- HERE! -->
+  <section class="scene5-pinned" id="scene5">
+    <div class="scene5-inner">
+      <div class="scene5-video-wrapper">
+        <video id="silverVideo" muted autoplay playsinline>
+          <source src="./audio/silversprings.mov" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div id="muteToggle" class="mute-button">🔇</div>
+        <div class="vignette-overlay"></div>
+        <div id="scene5-lyrics" class="scene5-lyrics"></div>
+      </div>
+    </div>
+  </section>
+  
+  <audio id="silverSpringsAudio" src="./audio/silversprings.mp3"></audio>
+
+  
+  <script>
+    const steps = document.querySelectorAll('.step');
+    const songs = document.querySelectorAll('.song');
+    const fleetwoodImg = document.getElementById('img-7');
+    const zoomTrigger = document.getElementById('zoomTrigger');
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const line1 = document.getElementById('line1');
+      const line2 = document.getElementById('line2');
+      const line3 = document.getElementById('line3');
+
+      if (scrollY < window.innerHeight * 0.25) {
+        // Show line1
+        line1.classList.add('fade-in');
+        line1.classList.remove('fade-out');
+        line2.classList.remove('fade-in');
+        line2.classList.add('fade-out');
+        line3.classList.remove('fade-in');
+        line3.classList.add('fade-out');
+      } else if (scrollY >= window.innerHeight * 0.25 && scrollY < window.innerHeight * 0.7) {
+        // Show line2
+        line1.classList.remove('fade-in');
+        line1.classList.add('fade-out');
+        line2.classList.add('fade-in');
+        line2.classList.remove('fade-out');
+        line3.classList.remove('fade-in');
+        line3.classList.add('fade-out');
+      } else if (scrollY >= window.innerHeight * 0.7) {
+        // Show line3
+        line1.classList.remove('fade-in');
+        line1.classList.add('fade-out');
+        line2.classList.remove('fade-in');
+        line2.classList.add('fade-out');
+        line3.classList.add('fade-in');
+        line3.classList.remove('fade-out');
+      }
+    });
+
+
+
+    let highlightStarted = false;
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const stepEl = entry.target;
+        const index = Array.from(steps).indexOf(stepEl);
+
+        stepEl.classList.toggle('visible', entry.isIntersecting);
+
+        if (entry.isIntersecting && !highlightStarted && index === 0) {
+          highlightStarted = true;
+        }
+
+        if (entry.isIntersecting && highlightStarted) {
+          const highlightId = stepEl.getAttribute('data-highlight');
+          const highlightEl = document.getElementById(highlightId);
+
+          songs.forEach(song => song.classList.add('dim'));
+          if (highlightEl) highlightEl.classList.remove('dim');
+        }
+      });
+    }, { threshold: 0.5 });
+
+    steps.forEach(step => observer.observe(step));
+
+    let zoomActivated = false;
+
+    const zoomObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !zoomActivated) {
+          zoomActivated = true;
+          document.body.classList.add('zoom-mode');
+          fleetwoodImg.classList.add('zoomed');
+
+          const fleetwoodAudio = document.getElementById('fleetwoodAudio');
+          fleetwoodAudio.play();
+        }
+      });
+    }, { threshold: 0.6 });
+
+    zoomObserver.observe(zoomTrigger);
+
+    const highlightMap = {
+      "line-intro": "highlight-intro",
+      "line-stevie": "highlight-stevie",
+      "line-lindsey": "highlight-lindsey",
+      "line-mick": "highlight-mick"
+    };
+
+    const highlightSteps = Object.keys(highlightMap).map(id => document.getElementById(id));
+
+    const highlightObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const activeId = highlightMap[entry.target.id];
+
+          // Hide all overlays first
+          document.querySelectorAll(".highlight-overlay").forEach(img => img.classList.remove("visible"));
+
+          // Show current one if available
+          if (activeId) {
+            document.getElementById(activeId).classList.add("visible");
+            fleetwoodImg.classList.add("faded-out"); // 🔥 hide zoomed image for any overlay
+          }
+        } else {
+          // If none of the highlight steps are intersecting, restore the zoomed image
+          const anyVisible = Array.from(highlightSteps).some(step =>
+            step.getBoundingClientRect().top < window.innerHeight &&
+            step.getBoundingClientRect().bottom > 0
+          );
+
+          if (!anyVisible && !document.body.classList.contains('end-reached')) {
+            fleetwoodImg.classList.remove("faded-out");
+          }
+        }
+      });
+    }, { threshold: 0.6 });
+
+
+    highlightSteps.forEach(step => highlightObserver.observe(step));
+
+    function toggleLyricAudio(audioId, lyricId, el) {
+      const audio = document.getElementById(audioId);
+      const icon = el.querySelector('.play-icon');
+      const lyricEl = document.getElementById(lyricId);
+
+      // Stop other audio + hide other lyrics
+      document.querySelectorAll('audio').forEach(a => {
+        if (a.id !== audioId) a.pause();
+      });
+
+      document.querySelectorAll('.lyrics-overlay').forEach(l => l.classList.remove('visible'));
+
+      // Toggle current
+      if (audio.paused) {
+        audio.play();
+        icon.textContent = '⏸';
+
+        // Reset and show lyric overlay
+        lyricEl.textContent = '';
+        lyricEl.classList.add('visible');
+        currentLine = 0;
+
+        audio.onended = () => {
+          icon.textContent = '▶';
+          lyricEl.classList.remove('visible');
+        };
+      } else {
+        audio.pause();
+        icon.textContent = '▶';
+        lyricEl.classList.remove('visible');
+      }
+    }
+
+    function getLyricsFor(lyricId) {
+      switch (lyricId) {
+        case 'lyrics-mick-1':
+          return `“Said Sara”`;
+        case 'lyrics-mick-2':
+          return `“You're the poet in my heart”`;
+        default:
+          return '';
+      }
+    }
+
+    function typeLyrics(el, text) {
+      let index = 0;
+      function type() {
+        if (index < text.length) {
+          el.textContent += text.charAt(index);
+          index++;
+          setTimeout(type, 40); // typing speed
+        }
+      }
+      type();
+    }
+
+
+    function toggleAudio(id, el) {
+      const audio = document.getElementById(id);
+      const icon = el.querySelector('.play-icon');
+
+      if (audio.paused) {
+        audio.play();
+        icon.textContent = '⏸';
+      } else {
+        audio.pause();
+        icon.textContent = '▶';
+      }
+
+      document.querySelectorAll('audio').forEach(other => {
+        if (other.id !== id) {
+          other.pause();
+          const pill = document.querySelector([onclick*="${other.id}"] .play-icon);
+          if (pill) pill.textContent = '▶';
+        }
+      });
+
+      audio.onended = () => {
+        icon.textContent = '▶';
+      };
+    }
+
+    const mickAudio = document.getElementById("mickAudio2");
+    const lyricEl = document.getElementById("lyrics-mick-2");
+    let currentLine = 0;
+
+    mickAudio.addEventListener("timeupdate", () => {
+      if (currentLine >= lyricsSara.length) return;
+
+      const currentTime = mickAudio.currentTime;
+      const nextLyric = lyricsSara[currentLine];
+
+      if (currentTime >= nextLyric.time) {
+        lyricEl.textContent = nextLyric.text;
+        lyricEl.classList.add("visible");
+        currentLine++;
+      }
+    });
+
+    mickAudio.addEventListener("ended", () => {
+      lyricEl.classList.remove("visible");
+      lyricEl.textContent = "";
+      currentLine = 0;
+    });
+
+    mickAudio.addEventListener("seeked", () => {
+      // Reset lyric index to match current time
+      currentLine = lyricsSara.findIndex(l => l.time > mickAudio.currentTime);
+      if (currentLine === -1) currentLine = lyricsSara.length;
+    });
+
+    const dreamsAudio = document.getElementById("dreamsAudio");
+    const lyricDreamsEl = document.getElementById("lyrics-dreams");
+    let dreamsLine = 0;
+
+    dreamsAudio.addEventListener("timeupdate", () => {
+      if (dreamsLine >= lyricsDreams.length) return;
+
+      const currentTime = dreamsAudio.currentTime;
+      const nextLyric = lyricsDreams[dreamsLine];
+
+      if (currentTime >= nextLyric.time) {
+        lyricDreamsEl.textContent = nextLyric.text;
+        lyricDreamsEl.classList.add("visible");
+        dreamsLine++;
+      }
+    });
+
+    dreamsAudio.addEventListener("ended", () => {
+      lyricDreamsEl.classList.remove("visible");
+      lyricDreamsEl.textContent = "";
+      dreamsLine = 0;
+    });
+
+    dreamsAudio.addEventListener("seeked", () => {
+      dreamsLine = lyricsDreams.findIndex(l => l.time > dreamsAudio.currentTime);
+      if (dreamsLine === -1) dreamsLine = lyricsDreams.length;
+    });
+
+    const goAudio = document.getElementById("goAudio");
+    const lyricGoEl = document.getElementById("lyrics-go");
+    let goLine = 0;
+
+    goAudio.addEventListener("timeupdate", () => {
+      if (goLine >= lyricsGo.length) return;
+
+      const currentTime = goAudio.currentTime;
+      const nextLyric = lyricsGo[goLine];
+
+      if (currentTime >= nextLyric.time) {
+        lyricGoEl.textContent = nextLyric.text;
+        lyricGoEl.classList.add("visible");
+        goLine++;
+      }
+    });
+
+    goAudio.addEventListener("ended", () => {
+      lyricGoEl.classList.remove("visible");
+      lyricGoEl.textContent = "";
+      goLine = 0;
+    });
+
+    goAudio.addEventListener("seeked", () => {
+      goLine = lyricsGo.findIndex(l => l.time > goAudio.currentTime);
+      if (goLine === -1) goLine = lyricsGo.length;
+    });
+
+    const secondAudio = document.getElementById("secondAudio");
+    const lyricSecondEl = document.getElementById("lyrics-second");
+    let secondLine = 0;
+
+    secondAudio.addEventListener("timeupdate", () => {
+      if (secondLine >= lyricsSecond.length) return;
+
+      const currentTime = secondAudio.currentTime;
+      const nextLyric = lyricsSecond[secondLine];
+
+      if (currentTime >= nextLyric.time) {
+        lyricSecondEl.textContent = nextLyric.text;
+        lyricSecondEl.classList.add("visible");
+        secondLine++;
+      }
+    });
+
+    secondAudio.addEventListener("ended", () => {
+      lyricSecondEl.classList.remove("visible");
+      lyricSecondEl.textContent = "";
+      secondLine = 0;
+    });
+
+    secondAudio.addEventListener("seeked", () => {
+      secondLine = lyricsSecond.findIndex(l => l.time > secondAudio.currentTime);
+      if (secondLine === -1) secondLine = lyricsSecond.length;
+    });
+
+    const scene4Blocks = document.querySelectorAll(".scene4-text-block");
+    const scene4Pinned = document.querySelector(".scene4-pinned");
+
+    window.addEventListener("scroll", () => {
+    const scrollTop = window.scrollY;
+    const sceneTop = scene4Pinned.offsetTop;
+    const sceneHeight = scene4Pinned.offsetHeight;
+    const relScroll = scrollTop - sceneTop;
+
+    if (relScroll >= 0 && relScroll <= sceneHeight) {
+        const index = Math.floor(relScroll / window.innerHeight);
+
+        scene4Blocks.forEach((block, i) => {
+        block.classList.toggle("visible", i === index);
+        });
+
+        // 🔥 ADD THIS HERE to fade out overlays
+        document.querySelectorAll(".highlight-overlay").forEach(img => img.classList.remove("visible"));
+        document.getElementById("img-7").classList.add("faded-out");
+    }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const silverSpringsTrigger = document.getElementById('silverSpringsTrigger');
+      const silverSpringsAudio = document.getElementById('silverSpringsAudio');
+      let silverPlayed = false;
+
+      const silverObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !silverPlayed) {
+            silverSpringsAudio.play().catch(e => {
+              console.log("Autoplay blocked or error:", e);
+            });
+            silverPlayed = true;
+          }
+        });
+      }, { threshold: 0.6 });
+
+      silverObserver.observe(silverSpringsTrigger);
+    });
+
+
+    const lyricsSara = [
+      { time: 2, text: "Said Sara" },
+      { time: 5, text: "You're the poet in my heart" },
+      { time: 10, text: "Never change" },
+      { time: 13, text: "Never stop" },
+      { time: 17, text: "But now it's gone" },
+      { time: 20, text: "It doesn't matter what for" },
+      { time: 24, text: "But when you build your house" },
+      { time: 28, text: "Oh, then you call me home" }
+    ];
+
+    const lyricsDreams = [
+      { time: 5, text: "Thunder only happens when it's rainin'" },
+      { time: 13, text: "Players only love you when they're playin'" },
+      { time: 21, text: "Women, they will come and they will go" },
+      { time: 29, text: "When the rain washes you clean, you'll know" },
+      { time: 37, text: "Oh, thunder only happens when it's rainin'" },
+      { time: 45, text: "Players only love you when they're playin'" },
+      { time: 52, text: "Say women, they will come and they will go" },
+      { time: 61, text: "When the rain washes you clean, you'll know" }
+    ];
+
+    const lyricsGo = [
+      { time: 5, text: "Loving you" },
+      { time: 7, text: "Isn't the right thing to do" },
+      { time: 12, text: "How can I ever change things" },
+      { time: 16, text: "That I feel?" },
+      { time: 19, text: "If I could" },
+      { time: 21, text: "Baby, I'd give you my world" },
+      { time: 26, text: "How can I" },
+      { time: 28, text: "When you won't take it from me?" },
+      { time: 33, text: "You can go your own way" },
+      { time: 37, text: "Go your own way" },
+      { time: 41, text: "You can call it" },
+      { time: 42, text: "Another lonely day" },
+      { time: 48, text: "You can go your own way" },
+      { time: 52, text: "Go your own way" },
+      { time: 54, text: "Tell me why" },
+      { time: 57, text: "Everything turned around" },
+      { time: 62, text: "Packing up" },
+      { time: 64, text: "Shacking up is all you want to do" },
+      { time: 68, text: "If I could" },
+      { time: 70, text: "Baby, I'd give you my world" },
+      { time: 75, text: "Open up" },
+      { time: 77, text: "Everything’s waiting for you" },
+      { time: 83, text: "You can go your own way" },
+      { time: 87, text: "Go your own way" }
+    ];
+
+    const lyricsSecond = [
+      { time: 7, text: "I know there's nothin' to say" },
+      { time: 11, text: "Someone has taken my place" },
+      { time: 14, text: "When times go bad" },
+      { time: 16, text: "When times go rough" },
+      { time: 18, text: "Won't you lay me down in tall grass" },
+      { time: 20, text: "And let me do my stuff" },
+      { time: 23, text: "I know I got nothin' on you" },
+      { time: 27, text: "I know there's nothin' to do" },
+      { time: 31, text: "When times go bad" },
+      { time: 33, text: "And you can't get enough" },
+      { time: 35, text: "Won't you lay me down in the tall grass" },
+      { time: 37, text: "And let me do my stuff" },
+      { time: 56, text: "One thing I think you should know" },
+      { time: 60, text: "I ain't gonna miss you when you go" },
+      { time: 63, text: "Been down so long" },
+      { time: 65, text: "I've been tossed around enough" },
+      { time: 67, text: "Aww, couldn't you just" },
+      { time: 68, text: "Let me go down and do my stuff" },
+      { time: 72, text: "I know you're hopin' to find" },
+      { time: 76, text: "Someone who's gonna give you peace of mind" },
+    ];
+  </script>
+
+<script>
+    const silverVideo = document.getElementById('silverVideo');
+    const muteBtn = document.getElementById('muteToggle');
+    const lyricsDiv = document.getElementById('scene5-lyrics');
+  
+    // Fade in on scroll
+    const silverSpringsAudio = document.getElementById('silverSpringsAudio');
+    let silverPlayed = false;
+
+    const scene5Observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !silverPlayed) {
+          silverVideo.classList.add('visible');
+          silverVideo.play();
+          silverSpringsAudio.play().catch(e => {
+            console.log("Autoplay blocked or error:", e);
+          });
+          silverPlayed = true;
+        }
+      });
+    }, { threshold: 1 }); // tighter threshold for more accurate trigger
+
+    scene5Observer.observe(document.getElementById('silverVideo'));
+
+
+    // Mute/unmute toggle
+    muteBtn.addEventListener('click', () => {
+      silverVideo.muted = !silverVideo.muted;
+      muteBtn.textContent = silverVideo.muted ? '🔇' : '🔊';
+    });
+  
+    // Fade to black at end
+    silverVideo.addEventListener('timeupdate', () => {
+      const fadeStart = silverVideo.duration - 5;
+      if (silverVideo.currentTime > fadeStart) {
+        silverVideo.style.transition = 'opacity 4s ease';
+        silverVideo.style.opacity = 0;
+      }
+  
+      // Show lyrics (sync logic below)
+      const current = silverVideo.currentTime;
+      const lyric = silverSpringsLyrics.find(line => current >= line.time && !line.shown);
+      if (lyric) {
+        lyricsDiv.innerHTML = `<span class="lyric-${lyric.singer.toLowerCase()}">${lyric.text}</span>`;
+        lyricsDiv.style.opacity = 1;
+        lyric.shown = true;
+      }
+    });
+  
+    silverVideo.addEventListener('ended', () => {
+      lyricsDiv.style.opacity = 0;
+      lyricsDiv.textContent = "";
+    });
+  
+    const silverSpringsLyrics = [
+      { time: 2, text: "Time cast a spell on you, but you won't forget me", shown: false, singer: "STEVIE" },
+      { time: 10, text: "I know I could have loved you", shown: false, singer: "TOGETHER" },
+      { time: 15, text: "But you would not let me", shown: false, singer: "TOGETHER" },
+      { time: 22, text: "I'll follow you down til' the sound of my voice will haunt you", shown: false, singer: "STEVIE" },
+      { time: 33, text: "You'll never get away from the sound of the woman that loves you", shown: false, singer: "STEVIE" },
+      { time: 45, text: "I'll follow you down 'til the sound of my voice will haunt you", shown: false, singer: "TOGETHER" },
+      { time: 54, text: "Was I such a fool?", shown: false, singer: "STEVIE" },
+      { time: 56, text: "You'll never get away from the sound of the woman that loves you", shown: false, singer: "STEVIE" },
+      { time: 65, text: "Was I such a fool?", shown: false, singer: "STEVIE" },
+      { time: 68, text: "I'll follow you down til' the sound of my voice will haunt you", shown: false, singer: "TOGETHER" },
+      { time: 77, text: "Give me just a chance", shown: false, singer: "STEVIE" },
+      { time: 79, text: "You'll never get away from the sound of the woman that loves you", shown: false, singer: "STEVIE" },
+      { time: 80, text: "You'll never get away. You’ll never get away", shown: false, singer: "STEVIE" }
+    ];
+  </script>
+</body>
+</html>
