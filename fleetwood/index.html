@@ -566,7 +566,7 @@
 
   <div class="step-section">
     <div class="step" data-highlight="img-9">
-      <a href="https://en.wikipedia.org/wiki/Michael_Jordan" target="_blank" style="color:lightblue;text-decoration:underline;"><b>Michael Jordan</b></a> transformed every slight into fire. He didn’t just win games—he punished doubts with performance.
+      <a href="https://en.wikipedia.org/wiki/Michael_Jordan" target="_blank" style="color:lightblue;text-decoration:underline;"><b>Michael Jordan</b></a> transformed every slight into fire. He didn’t just win games — he punished doubts with performance.
       <details>
         <summary>Read more</summary>
         <p>Jordan’s infamous “I took that personally” mindset turned criticism into motivation. From being cut from his high school varsity team to proving himself after each NBA Finals loss, he used adversity as fuel for six championships and a cultural legacy.</p>
@@ -701,7 +701,7 @@
       <div class="scene4-text-block">The heartbreak, the tangled love triangle—<br>it all lived on in the music.</div>
       <div class="scene4-text-block">And 22 years later, the wound still hadn’t closed.</div>
       <div class="scene4-text-block" id="silverSpringsTrigger">
-        Stevie answered again—this time onstage, <br>face to face <br><strong>with <em>Silver Springs</em> in 1997.</strong>
+        Stevie answered again—this time onstage, <br>face to face <strong>with <em>Silver Springs</em> in 1997.</strong>
       </div>      
     </div>
   </section>
@@ -710,8 +710,11 @@
   <section class="scene5-pinned" id="scene5">
     <div class="scene5-inner">
       <div class="scene5-video-wrapper">
-        <video id="silverVideo" muted autoplay playsinline>
-          <source src="./audio/silversprings.mov" type="video/mp4" />
+        <!--JEFF: New Handbrake MP4 export of Silver Springs video, with audio baked in-->
+        <video id="silverVideo" playsinline> <!--JEFF: no longer muted, and not autoplay-->
+          <source src="./audio/silversprings_handbrake.mp4" type="video/mp4" />
+          <!--JEFF: For potential future use with VTTs - I'm not using them at the moment-->
+          <!-- <track label="English" kind="subtitles" srclang="en" src="audio/myVideo_sub.vtt"> -->
           Your browser does not support the video tag.
         </video>
         <div id="muteToggle" class="mute-button">🔇</div>
@@ -721,8 +724,14 @@
     </div>
   </section>
   
-  <audio id="silverSpringsAudio" src="./audio/silversprings.mp3"></audio>
+  <!--JEFF: No need for this MP3 anymore-->
+  <!-- <audio id="silverSpringsAudio" src="./audio/silversprings.mp3"></audio> -->
 
+  <!--JEFF: Below is the link to the jQuery library which builds on vanilla JS and gives us some streamlined capabilties-->
+  <!--JEFF: Keep in mind, not everyone currently depends as much on jQuery, but I'm using it as a quick way to fade out the landslide audio-->
+  <!--JEFF: There are other more sophisicated audio libraries when it comes to controlling audio fades and loads, etc.-->
+  <!--JEFF: This library is of course getting pulled from a Google server, so you need to be connected to the Internet to retrive it. You can also download jQuery and store it in your folders and link to it locally that way, which your local file path-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   
   <script>
     const steps = document.querySelectorAll('.step');
@@ -1071,9 +1080,10 @@
       const silverObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !silverPlayed) {
-            silverSpringsAudio.play().catch(e => {
-              console.log("Autoplay blocked or error:", e);
-            });
+            //JEFF: No need for separate MP3
+            // silverSpringsAudio.play().catch(e => {
+            //   console.log("Autoplay blocked or error:", e);
+            // });
             silverPlayed = true;
           }
         });
@@ -1170,16 +1180,17 @@
         if (entry.isIntersecting && !silverPlayed) {
           silverVideo.classList.add('visible');
           silverVideo.play();
-          silverSpringsAudio.play().catch(e => {
-            console.log("Autoplay blocked or error:", e);
-          });
+          //JEFF: No need for separate MP3
+          // silverSpringsAudio.play().catch(e => {
+          //   console.log("Autoplay blocked or error:", e);
+          // });
           silverPlayed = true;
+          $("#fleetwoodAudio").animate({volume: 0}, 1000); //JEFF: fade out earlier landslide song over 1 second (if still playing), using jQuery
         }
       });
     }, { threshold: 1 }); // tighter threshold for more accurate trigger
 
     scene5Observer.observe(document.getElementById('silverVideo'));
-
 
     // Mute/unmute toggle
     muteBtn.addEventListener('click', () => {
@@ -1189,6 +1200,7 @@
   
     // Fade to black at end
     silverVideo.addEventListener('timeupdate', () => {
+
       const fadeStart = silverVideo.duration - 5;
       if (silverVideo.currentTime > fadeStart) {
         silverVideo.style.transition = 'opacity 4s ease';
@@ -1211,19 +1223,21 @@
     });
   
     const silverSpringsLyrics = [
-      { time: 2, text: "Time cast a spell on you, but you won't forget me", shown: false, singer: "STEVIE" },
-      { time: 10, text: "I know I could have loved you", shown: false, singer: "TOGETHER" },
-      { time: 15, text: "But you would not let me", shown: false, singer: "TOGETHER" },
-      { time: 22, text: "I'll follow you down til' the sound of my voice will haunt you", shown: false, singer: "STEVIE" },
-      { time: 33, text: "You'll never get away from the sound of the woman that loves you", shown: false, singer: "STEVIE" },
-      { time: 45, text: "I'll follow you down 'til the sound of my voice will haunt you", shown: false, singer: "TOGETHER" },
-      { time: 54, text: "Was I such a fool?", shown: false, singer: "STEVIE" },
-      { time: 56, text: "You'll never get away from the sound of the woman that loves you", shown: false, singer: "STEVIE" },
-      { time: 65, text: "Was I such a fool?", shown: false, singer: "STEVIE" },
-      { time: 68, text: "I'll follow you down til' the sound of my voice will haunt you", shown: false, singer: "TOGETHER" },
-      { time: 77, text: "Give me just a chance", shown: false, singer: "STEVIE" },
-      { time: 79, text: "You'll never get away from the sound of the woman that loves you", shown: false, singer: "STEVIE" },
-      { time: 80, text: "You'll never get away. You’ll never get away", shown: false, singer: "STEVIE" }
+      //JEFF: Updated times
+      { time: 9, text: "Time cast a spell on you, but you won't forget me", shown: false, singer: "STEVIE" },
+      { time: 20, text: "I know I could have loved you", shown: false, singer: "TOGETHER" },
+      { time: 24, text: "But you would not let me", shown: false, singer: "TOGETHER" },
+      { time: 31, text: "I'll follow you down til' the sound of my voice will haunt you", shown: false, singer: "STEVIE" },
+      { time: 43, text: "You'll never get away from the sound of the woman that loves you", shown: false, singer: "STEVIE" },
+      { time: 54, text: "I'll follow you down 'til the sound of my voice will haunt you", shown: false, singer: "TOGETHER" },
+      { time: 63, text: "Was I such a fool?", shown: false, singer: "STEVIE" },
+      { time: 66, text: "You'll never get away from the sound of the woman that loves you", shown: false, singer: "STEVIE" },
+      { time: 74, text: "Was I such a fool?", shown: false, singer: "STEVIE" },
+      { time: 77, text: "I'll follow you down til' the sound of my voice will haunt you", shown: false, singer: "TOGETHER" },
+      { time: 84, text: "Give me just a chance", shown: false, singer: "STEVIE" },
+      { time: 88, text: "Never get away. Never get away. Never get away", shown: false, singer: "STEVIE" },
+      { time: 100, text: "You could be my Silver Spring", shown: false, singer: "STEVIE" },
+      { time: 105, text: "My blue-green colors flashing", shown: false, singer: "STEVIE" }
     ];
   </script>
 </body>
